@@ -1,0 +1,46 @@
+{
+  "name": "rollup-chain",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "gmsr build",
+    "dev": "gmsr build --watch",
+    "lint": "gmsr lint",
+    "lint:fix": "gmsr lint --fix",
+    "start": "gmsr dev",
+    "test:unit": "gmsr test:unit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{css,less,sass,scss}": [
+      "stylelint --fix",
+      "git add"
+    ],
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@gem-mine/babel-preset-app": "^2.4.3",
+    "@gem-mine/cli-plugin-eslint": "^3.1.5",
+    "@gem-mine/cli-plugin-jest": "^1.4.2",
+    "@gem-mine/cli-plugin-typescript": "^2.6.2",
+    "@gem-mine/eslint-config-recommend-ts": "^3.1.5",
+    "@gem-mine/script-rollup": "^1.3.4",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.21",
+    "@types/webpack-env": "^1.14.0",
+    "eslint": "^6.8.0",
+    "husky": "^2.7.0",
+    "lint-staged": "^7.2.2",
+    "rimraf": "^3.0.0",
+    "stylelint": "^9.10.1",
+    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-config-standard": "^18.2.0",
+    "ts-jest": "^24.1.0"
+  }
+}
