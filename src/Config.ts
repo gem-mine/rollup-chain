@@ -7,7 +7,7 @@ import Treeshake from './Treeshake'
 import Watch from './Watch'
 
 class Config extends ChainedMap {
-  entryPoints: ChainedMap
+  entry: ChainedMap
 
   plugins: ChainedMap
 
@@ -19,7 +19,7 @@ class Config extends ChainedMap {
 
   constructor() {
     super(undefined)
-    this.entryPoints = new ChainedMap(this)
+    this.entry = new ChainedMap(this)
     this.plugins = new ChainedMap(this)
     this.outputs = new ChainedMap(this)
     this.watch = new Watch(this)
@@ -40,10 +40,6 @@ class Config extends ChainedMap {
     ])
   }
 
-  entry(name: string) {
-    return this.entryPoints.getOrCompute(name, () => new ChainedSet(this))
-  }
-
   plugin(name: string) {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name))
   }
@@ -53,7 +49,6 @@ class Config extends ChainedMap {
   }
 
   toConfig() {
-    const entryPoints = this.entryPoints.entries() || {}
     const outputs = this.outputs.entries() || {}
 
     return this.clean(
@@ -67,13 +62,7 @@ class Config extends ChainedMap {
             },
             [] as object[],
           ),
-        input: Object.keys(entryPoints)
-          .reduce(
-            (acc, key) => Object.assign(acc, {
-              [key]: entryPoints[key].values()
-            }),
-            {},
-          ),
+        input: this.entry.entries() || {},
         treeshake: this.treeshake.entries(),
         watch: this.watch.entries(),
       }),
