@@ -1,5 +1,4 @@
 import ChainedMap from './lib/ChainedMap'
-import ChainedSet from './lib/ChainedSet'
 
 import Plugin from './Plugin'
 import Output from './Output'
