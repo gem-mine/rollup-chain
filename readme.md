@@ -1,1 +1,5 @@
-# sdk 打包工具库
+# rollup-chain
+
+类似webpackChain, 支持v2.18.1
+
+
