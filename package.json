@@ -10,7 +10,8 @@
     "dev": "gmsr build --watch",
     "lint": "gmsr lint",
     "lint:fix": "gmsr lint --fix",
-    "test:unit": "gmsr test:unit"
+    "test:unit": "gmsr test:unit",
+    "prepare": "npm run build"
   },
   "husky": {
     "hooks": {
