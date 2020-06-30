@@ -95,7 +95,7 @@ class Config extends ChainedMap {
             // get correct indentation for args by stringifying the args array and
             // discarding the square brackets.
             const args = _stringify(value.__pluginArgs)?.slice(1, -1)
-            return `${prefix}new ${constructorExpression}(${args})`
+            return `${prefix} ${constructorExpression}(${args})`
           }
           return (
             prefix
