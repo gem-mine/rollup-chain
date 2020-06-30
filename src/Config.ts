@@ -1,12 +1,13 @@
+import * as jsStringify from 'javascript-stringify'
 import ChainedMap from './lib/ChainedMap'
-
+import ChainedSet from './lib/ChainedSet'
 import Plugin from './Plugin'
 import Output from './Output'
 import Treeshake from './Treeshake'
 import Watch from './Watch'
 
 class Config extends ChainedMap {
-  entry: ChainedMap
+  entryPoints: ChainedMap
 
   plugins: ChainedMap
 
@@ -17,8 +18,8 @@ class Config extends ChainedMap {
   treeshake: Treeshake
 
   constructor() {
-    super(undefined)
-    this.entry = new ChainedMap(this)
+    super()
+    this.entryPoints = new ChainedMap(this)
     this.plugins = new ChainedMap(this)
     this.outputs = new ChainedMap(this)
     this.watch = new Watch(this)
@@ -39,6 +40,10 @@ class Config extends ChainedMap {
     ])
   }
 
+  input(name: string) {
+    return this.entryPoints.getOrCompute(name, () => new ChainedSet(this))
+  }
+
   plugin(name: string) {
     return this.plugins.getOrCompute(name, () => new Plugin(this, name))
   }
@@ -48,6 +53,7 @@ class Config extends ChainedMap {
   }
 
   toConfig() {
+    const entryPoints = this.entryPoints.entries() || {}
     const outputs = this.outputs.entries() || {}
 
     return this.clean(
@@ -61,7 +67,11 @@ class Config extends ChainedMap {
             },
             [] as object[],
           ),
-        input: this.entry.entries() || {},
+        input: this.uniqueArr(Object.keys(entryPoints)
+          .reduce((acc, key) => [
+            ...acc,
+            ...entryPoints[key].values()
+          ], [] as string[])),
         treeshake: this.treeshake.entries(),
         watch: this.watch.entries(),
       }),
@@ -69,8 +79,7 @@ class Config extends ChainedMap {
   }
 
   static toString(config, { verbose = false, configPrefix = 'config' } = {}) {
-    // eslint-disable-next-line global-require
-    const { stringify } = require('javascript-stringify')
+    const { stringify } = jsStringify
 
     return stringify(
       config,
@@ -85,7 +94,7 @@ class Config extends ChainedMap {
           if (constructorExpression) {
             // get correct indentation for args by stringifying the args array and
             // discarding the square brackets.
-            const args = _stringify(value.__pluginArgs).slice(1, -1)
+            const args = _stringify(value.__pluginArgs)?.slice(1, -1)
             return `${prefix}new ${constructorExpression}(${args})`
           }
           return (
@@ -113,6 +122,10 @@ class Config extends ChainedMap {
 
   toString(options?: any) {
     return Config.toString(this.toConfig(), options)
+  }
+
+  uniqueArr(arr: any[]) {
+    return Array.from(new Set(arr))
   }
 }
 
