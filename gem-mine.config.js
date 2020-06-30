@@ -1,4 +1,6 @@
 module.exports = {
   filenameHashing: false,
-  target: ['cjs']
+  target: ['cjs'],
+  productionSourceMap: true,
+  minify: false
 }
