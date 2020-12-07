@@ -26,7 +26,7 @@ class Config extends ChainedMap {
     this.treeshake = new Treeshake(this)
 
     this.extend([
-      'externals',
+      'external',
       'cache',
       'onwarn',
       'acorn',
