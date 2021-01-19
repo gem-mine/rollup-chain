@@ -34,6 +34,7 @@ class Output extends ChainedMap {
       'minifyInternalExports',
       'paths',
       'preserveModules',
+      'preserveModulesRoot',
       'sourcemap',
       'sourcemapExcludeSources',
       'sourcemapFile',
