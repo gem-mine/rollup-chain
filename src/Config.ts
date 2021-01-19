@@ -67,11 +67,12 @@ class Config extends ChainedMap {
             },
             [] as object[],
           ),
-        input: this.uniqueArr(Object.keys(entryPoints)
-          .reduce((acc, key) => [
-            ...acc,
-            ...entryPoints[key].values()
-          ], [] as string[])),
+        input: Object.keys(entryPoints).reduce(
+          (acc, key) => Object.assign(acc, {
+            [key]: entryPoints[key].values()
+          }),
+          {},
+        ),
         treeshake: this.treeshake.entries(),
         watch: this.watch.entries(),
       }),
